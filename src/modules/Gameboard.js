@@ -1,5 +1,6 @@
 import Gamegrid from "./Gamegrid.js";
 
+//Game board to keep track of all grids composing the gameboard
 export default class Gameboard {
     constructor(player1, player2, gridSize) {
         this.player1 = player1;

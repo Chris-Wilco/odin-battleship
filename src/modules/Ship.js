@@ -1,13 +1,23 @@
 export default class Ship {
-    constructor(shipSize, shipOrientation, gridStartingPoint) {
+    constructor(shipSize, shipName) {
+        this.shipName = shipName;
         this.shipSize = shipSize;
-        this.shipOrientation = shipOrientation;
-        this.gridStartingPoint = gridStartingPoint;
-        this.shipCoordinates = [];
+
         this.sunk = false;
+        this.hits = 0;
     }
 
     generateCoordinateList(gridStartingPoint) {}
 
-    placeShip() {}
+    hit() {
+        this.hits++;
+        this.sunk = isSunk();
+    }
+
+    isSunk() {
+        if (this.hits < this.shipSize) {
+            return false;
+        }
+        return true;
+    }
 }

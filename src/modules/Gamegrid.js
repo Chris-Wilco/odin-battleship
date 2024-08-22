@@ -1,7 +1,6 @@
 export default class Gamegrid {
-    constructor(gridSize, gridKind) {
+    constructor(gridSize) {
         this.gridSize = gridSize;
-        this.gridKind = gridKind;
         this.gameGrid = generateGridCoordinates();
 
         return this.gameGrid;
