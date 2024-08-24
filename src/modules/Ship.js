@@ -2,6 +2,8 @@ export default class Ship {
     constructor(shipSize, shipName) {
         this.shipName = shipName;
         this.shipSize = shipSize;
+        this.orientationPair;
+        this.anchorCoords;
 
         this.sunk = false;
         this.hits = 0;

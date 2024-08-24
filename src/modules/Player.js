@@ -8,6 +8,12 @@ export default class Player {
         this.playerShips = [];
         this.playerBoard;
         this.enemyBoard;
+        this.cardinalRefs = [
+            [0, 1],
+            [0, -1],
+            [1, 0],
+            [-1, 0],
+        ];
     }
 
     generateShips() {
@@ -16,7 +22,22 @@ export default class Player {
         }
     }
 
+    /* createPlayerShips(player, numberOfShips) {
+        //creates x number of ships for a player
+        for (let i = 0; i < numberOfShips; i++) {}
+    }
+ */
     generateShip(shipSize, shipName) {
         this.playerShips.push(new Ship(shipSize, shipName));
+    }
+
+    placeShip(player, xCoord, yCoord, orientation) {
+        if (!this.playerBoard.legalSquare(xCoord, yCoord)) {
+            return false;
+        }
+
+        //asks for an x and y coordinate to place the ship, as well as the orientation of the ship
+        //determines if the location is a valid one by checking the grid and the orientation against the grid size
+        //if location is valid, places the ship on the grid by marking the appropriate grid spaces as containing a ship
     }
 }
