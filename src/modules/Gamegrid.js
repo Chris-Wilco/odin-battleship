@@ -1,3 +1,4 @@
+//Organize and catalog the state of each grid square
 export default class Gamegrid {
     constructor(gridSize) {
         this.gridSize = gridSize;
@@ -13,36 +14,42 @@ export default class Gamegrid {
     }
 
     generateGridSquares() {
-        const gridRows = [];
+        const totalGrid = [];
         for (let i = 0; i < this.gridSize; i++) {
-            const gridRow = [];
+            const gridColumns = [];
             for (let j = 0; j < this.gridSize; j++) {
-                const newCoord = new GridSquare(i, j);
-                gridRow.push(newCoord);
+                gridColumns.push(new GridSquare(i, j));
             }
-            gridRows.push(gridRow);
+            totalGrid.push(gridColumns);
         }
-        return gridRows;
+        return totalGrid;
     }
 
-    legalSquare(xCoord, yCoord) {
-        return this.goodCoord(xCoord) && this.goodCoord(yCoord);
+    legalSquare(coordinates) {
+        return (
+            this.validCoord(coordinates[0]) && this.validCoord(coordinates[1])
+        );
     }
 
-    goodCoord(coord) {
+    validCoord(coord) {
         if (coord >= 0 && coord < this.gridSize) {
             return true;
         }
         return false;
     }
 
-    legalShipPlacement(xCoord, yCoord, orientationPair, shipToPlace) {
+    alreadyHit(coordinates) {
+        return this.gameGrid[coordinates[0]][coordinates[1]].isHit();
+    }
+
+    legalShipPlacement(coordinates, orientationPair, shipToPlace) {
         for (let i = 0; i < shipToPlace.shipSize; i++) {
-            const thisX = xCoord + i * orientationPair[0];
-            const thisY = yCoord + i * orientationPair[1];
+            const theseCoordinates = [];
+            theseCoordinates.push(coordinates[0] + i * orientationPair[0]);
+            theseCoordinates.push(coordinates[1] + i * orientationPair[1]);
             if (
-                !this.legalSquare(thisX, thisY) ||
-                this.alreadyAShipThere(thisX, thisY)
+                !this.legalSquare(theseCoordinates) ||
+                this.squareHasShip(theseCoordinates)
             ) {
                 return false;
             }
@@ -51,30 +58,59 @@ export default class Gamegrid {
         return true;
     }
 
-    alreadyAShipThere(xCoord, yCoord) {
-        return this.gameGrid[xCoord][yCoord].containsShip();
+    squareHasShip(coordinates) {
+        return this.gameGrid[coordinates[0]][coordinates[1]].containsShip();
     }
 
-    placeShip(xCoord, yCoord, orientationPair, shipToPlace) {
+    placeShip(coordinates, orientationPair, shipToPlace) {
         if (
-            !this.legalShipPlacement(
-                xCoord,
-                yCoord,
-                orientationPair,
-                shipToPlace
-            )
+            !this.legalShipPlacement(coordinates, orientationPair, shipToPlace)
         ) {
             return false;
         }
         for (let i = 0; i < shipToPlace.shipSize; i++) {
-            const thisX = xCoord + i * orientationPair[0];
-            const thisY = yCoord + i * orientationPair[1];
+            const theseCoordinates = [];
+            theseCoordinates.push(coordinates[0] + i * orientationPair[0]);
+            theseCoordinates.push(coordinates[1] + i * orientationPair[1]);
 
-            this.gameGrid[thisX][thisY].containsShip = true;
-            this.gameGrid[thisX][thisY].ship = shipToPlace;
+            this.gameGrid[theseCoordinates[0]][
+                theseCoordinates[1]
+            ].containsShip = true;
+            this.gameGrid[theseCoordinates[0]][theseCoordinates[1]].ship =
+                shipToPlace;
         }
-        shipToPlace.anchorCoords = [xCoord, yCoord];
+        shipToPlace.anchorCoords = coordinates;
         shipToPlace.orientationPair = orientationPair;
+        return true;
+    }
+
+    attackSquare(attackCoordinates) {
+        const thisSquare =
+            this.gameGrid[attackCoordinates[0]][attackCoordinates[1]];
+        thisSquare.hasBeenAttacked = true;
+
+        if (thisSquare.containsShip) {
+            thisSquare.ship.hit();
+            this.markHit(attackCoordinates);
+            return true;
+        }
+
+        this.markMiss(attackCoordinates);
+        return false;
+    }
+
+    //will also update the visual grid with a red peg
+    markHit(attackCoordinates) {
+        const thisSquare =
+            this.gameGrid[attackCoordinates[0]][attackCoordinates[1]];
+        thisSquare.hit = true;
+    }
+
+    //will also update the visual grid with a white peg
+    markMiss(attackCoordinates) {
+        const thisSquare =
+            this.gameGrid[attackCoordinates[0]][attackCoordinates[1]];
+        thisSquare.miss = true;
     }
 }
 
@@ -83,8 +119,11 @@ export class GridSquare {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.hit = false;
+        this.miss = false;
         this.containsShip = false;
         this.ship;
+
+        this.hasBeenAttacked = false;
     }
 
     isHit() {
