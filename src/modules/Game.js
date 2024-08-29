@@ -17,7 +17,14 @@ export default class Game {
 
         this.setUpGame();
 
-        this.playerTurn();
+        while (!this.weHaveAWinner()) {
+            this.playerTurn();
+        }
+
+        const winnerAndLoser = this.whoWon();
+        alert(
+            `${winnerAndLoser[0]} has sunk all of ${winnerAndLoser[1]}'s ships! ${winnerAndLoser[0]} is the winner!`
+        );
     }
 
     //creates both players sets of ships and places them on the board
@@ -51,7 +58,7 @@ export default class Game {
     //ask player which coordinate to attack
     //checks to make sure that coordinate is within the grid space
     //check to make sure that coordinate has not already been attacked
-    //return that grid coordinate
+    //return that grid coordinate to calling function
     whichCoordinateToAttack(mapUnderAttack) {
         const coordinates = [];
         coordinates.push(prompt("Which x coord?"));
@@ -60,6 +67,9 @@ export default class Game {
             !mapUnderAttack.legalSquare(coordinates) ||
             mapUnderAttack[coordinates[0]][coordinates[1]].hasBeenAttacked
         ) {
+            alert(
+                "the coordinates chosen are illegal, or have already been attacked, please choose new coordinates"
+            );
             return this.whichCoordinateToAttack();
         }
         return coordinates;
@@ -70,10 +80,11 @@ export default class Game {
         const isAHit = mapUnderAttack.attackSquare(attackCoordinates);
 
         isAHit
-            ? attackerRadar.markAsHit(attackCoordinates)
-            : attackerRadar.markAsMiss(attackCoordinates);
+            ? attackerRadar.markHit(attackCoordinates)
+            : attackerRadar.markMiss(attackCoordinates);
     }
 
+    //assign attackingPlayer and playerUnderAttack to their new reversed roles
     passTurn() {
         const tookLastTurn = this.attackingPlayer;
         this.attackingPlayer = this.playerUnderAttack;
@@ -88,4 +99,15 @@ export default class Game {
 
     //notifies player that their attack was a miss
     notifyOfMiss() {}
+
+    weHaveAWinner() {
+        return this.player1.allShipsSunk() || this.player2.allShipsSunk();
+    }
+
+    whoWon() {
+        const winnerAndLoser = this.player1.allShipsSunk()
+            ? [this.player2, this.player1]
+            : [this.player1, this.player2];
+        return winnerAndLoser;
+    }
 }

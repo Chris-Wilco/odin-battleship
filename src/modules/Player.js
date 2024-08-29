@@ -70,4 +70,13 @@ export default class Player {
             this.placeShip(shipToPlace);
         }
     }
+
+    allShipsSunk() {
+        this.playerShips.forEach((ship) => {
+            if (!ship.isSunk()) {
+                return false;
+            }
+        });
+        return true;
+    }
 }
