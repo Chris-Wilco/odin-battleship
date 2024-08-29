@@ -33,3 +33,17 @@ class GameGridVisual {
 
     updateGridVisual() {}
 }
+
+class GameSquareVisual {
+    constructor(parentGrid) {
+        //create a square div to visualize that sector of the grid and visually represent it
+    }
+
+    displayShip() {}
+
+    displayHit() {}
+
+    displayMiss() {}
+
+    updateGridVisual() {}
+}
