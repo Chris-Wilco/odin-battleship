@@ -1,7 +1,7 @@
 //Organize and catalog the state of each grid square
 export default class Gamegrid {
-    constructor(gridSize) {
-        this.gridSize = gridSize;
+    constructor() {
+        this.gridSize = 10;
         this.gameGrid = generateGridSquares();
         this.cardinalRef = [
             [0, 1],
