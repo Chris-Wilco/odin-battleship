@@ -1,8 +1,17 @@
+import Player from "./Player.js";
+import Game from "./Game.js";
+
 export default class UserInterface {
     constructor() {
         //create basic webpage layout with graphic representation of both player's game boards
 
+        this.player1 = new Player("player1");
+        this.player2 = new Player("player2");
         this.players = [];
+        this.players.push(this.player1);
+        this.players.push(this.player2);
+
+        this.game = new Game(this.player1, this.player2);
 
         this.pageBody = document.querySelector("body");
         this.controlContainer = this.generateControlContainer();
@@ -32,9 +41,42 @@ export default class UserInterface {
 
     populateControlContainer() {
         //new game button
+        const newGameButton = this.generatePageElement(
+            "div",
+            ["new-game-button", "button"],
+            this.controlContainer,
+            "new game"
+        );
+        newGameButton.addEventListener("click", () => {
+            this.game.newGame();
+        });
+
         //new player button
+        /* const newPlayerButton = this.generatePageElement(
+            "div",
+            ["new-player-button", "button"],
+            this.controlContainer,
+            "new player"
+        );
+        newPlayerButton.addEventListener("click", () => {}); */
+
         //end game button
+        const endGameButton = this.generatePageElement(
+            "div",
+            ["end-game-button", "button"],
+            this.controlContainer,
+            "end game"
+        );
+        endGameButton.addEventListener("click", () => {});
+
         //create players button
+        /* const createPlayersButton = this.generatePageElement(
+            "div",
+            ["create-players-button", "button"],
+            this.controlContainer,
+            "create players"
+        );
+        createPlayersButton.addEventListener("click", () => {}); */
     }
 
     generateInfoContainer() {
@@ -46,6 +88,8 @@ export default class UserInterface {
     }
 
     populateInfoContainer() {
+        //TODO: generate player info with generic player one and player two titles
+        //if blank, make blank elements
         //player1 info element
         //player2 info element
     }

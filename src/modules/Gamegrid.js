@@ -1,8 +1,8 @@
 //Organize and catalog the state of each grid square
-export default class Gamegrid {
+export default class GameGrid {
     constructor() {
         this.gridSize = 10;
-        this.gameGrid = generateGridSquares();
+        this.GameGrid = generateGridSquares();
         this.cardinalRef = [
             [0, 1],
             [0, -1],
@@ -10,7 +10,7 @@ export default class Gamegrid {
             [-1, 0],
         ];
 
-        return this.gameGrid;
+        return this.GameGrid;
     }
 
     generateGridSquares() {
@@ -39,7 +39,7 @@ export default class Gamegrid {
     }
 
     alreadyHit(coordinates) {
-        return this.gameGrid[coordinates[0]][coordinates[1]].isHit();
+        return this.GameGrid[coordinates[0]][coordinates[1]].isHit();
     }
 
     legalShipPlacement(coordinates, orientationPair, shipToPlace) {
@@ -59,7 +59,7 @@ export default class Gamegrid {
     }
 
     squareHasShip(coordinates) {
-        return this.gameGrid[coordinates[0]][coordinates[1]].containsShip();
+        return this.GameGrid[coordinates[0]][coordinates[1]].containsShip();
     }
 
     placeShip(coordinates, orientationPair, shipToPlace) {
@@ -73,10 +73,10 @@ export default class Gamegrid {
             theseCoordinates.push(coordinates[0] + i * orientationPair[0]);
             theseCoordinates.push(coordinates[1] + i * orientationPair[1]);
 
-            this.gameGrid[theseCoordinates[0]][
+            this.GameGrid[theseCoordinates[0]][
                 theseCoordinates[1]
             ].containsShip = true;
-            this.gameGrid[theseCoordinates[0]][theseCoordinates[1]].ship =
+            this.GameGrid[theseCoordinates[0]][theseCoordinates[1]].ship =
                 shipToPlace;
         }
         shipToPlace.anchorCoords = coordinates;
@@ -86,7 +86,7 @@ export default class Gamegrid {
 
     attackSquare(attackCoordinates) {
         const thisSquare =
-            this.gameGrid[attackCoordinates[0]][attackCoordinates[1]];
+            this.GameGrid[attackCoordinates[0]][attackCoordinates[1]];
         thisSquare.hasBeenAttacked = true;
 
         if (thisSquare.containsShip) {
@@ -102,14 +102,14 @@ export default class Gamegrid {
     //will also update the visual grid with a red peg
     markHit(attackCoordinates) {
         const thisSquare =
-            this.gameGrid[attackCoordinates[0]][attackCoordinates[1]];
+            this.GameGrid[attackCoordinates[0]][attackCoordinates[1]];
         thisSquare.hit = true;
     }
 
     //will also update the visual grid with a white peg
     markMiss(attackCoordinates) {
         const thisSquare =
-            this.gameGrid[attackCoordinates[0]][attackCoordinates[1]];
+            this.GameGrid[attackCoordinates[0]][attackCoordinates[1]];
         thisSquare.miss = true;
     }
 }

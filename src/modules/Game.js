@@ -1,18 +1,18 @@
-import Gameboard from "./Gameboard.js";
+import GameBoard from "./GameBoard.js";
 
 //Contains game mechanics
-//Facilitates interactions between the players and the Gameboard
+//Facilitates interactions between the players and the GameBoard
 export default class Game {
     constructor(player1, player2) {
         this.player1 = player1;
         this.player2 = player2;
-        this.gameBoard;
+        this.GameBoard;
         this.attackingPlayer = player1;
         this.playerUnderAttack = player2;
     }
 
     newGame() {
-        this.gameBoard = new Gameboard(player1, player2);
+        this.GameBoard = new GameBoard(player1, player2);
 
         this.setUpGame();
 
