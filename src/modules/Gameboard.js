@@ -1,5 +1,7 @@
 import GameGrid from "./GameGrid.js";
 
+//GameBoard hath been changed
+
 //GameBoard to keep track of all grids that compose the gameBoard
 export default class GameBoard {
     constructor(player1, player2) {

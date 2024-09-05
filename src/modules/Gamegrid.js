@@ -1,4 +1,7 @@
 //Organize and catalog the state of each grid square
+
+//GameGoard hath been changed
+
 export default class GameGrid {
     constructor() {
         this.gridSize = 10;
