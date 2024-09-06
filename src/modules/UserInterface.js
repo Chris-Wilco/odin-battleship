@@ -92,6 +92,20 @@ export default class UserInterface {
         //if blank, make blank elements
         //player1 info element
         //player2 info element
+
+        const player1Info = this.generatePageElement(
+            "div",
+            ["player-info-div", "button"],
+            this.infoContainer,
+            "Player 1"
+        );
+
+        const player2Info = this.generatePageElement(
+            "div",
+            ["player-info-div", "button"],
+            this.infoContainer,
+            "Player 2"
+        );
     }
 
     reloadInfoContainer() {
@@ -113,15 +127,16 @@ export default class UserInterface {
     }
 
     reloadGameContainerContent() {
-        this.clearGameContainerContent();
-        this.fillGameContainerContent();
+        this.clearGameContainer();
+        this.populateGameContainer();
     }
 
-    fillGameContainerContent() {
+    populateGameContainer() {
         //if no game yet, fill blank placeholder grid with no info?
+        //TODO: Pull from current Game to get game info and then propagate down the visuals to add elements to the game container
     }
 
-    clearGameContainerContent() {
+    clearGameContainer() {
         this.gameContainer.replaceChildren();
     }
 
