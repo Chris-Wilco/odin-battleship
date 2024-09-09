@@ -17,7 +17,9 @@ export default class UserInterface {
         this.controlContainer = this.generateControlContainer();
         this.populateControlContainer();
         this.infoContainer = this.generateInfoContainer();
+        this.populateInfoContainer();
         this.gameContainer = this.generateGameContainer();
+        this.populateGameContainer();
 
         /*         const addNewProjectButton = GenerateElement.generatePageElement(
             "div",
@@ -95,14 +97,14 @@ export default class UserInterface {
 
         const player1Info = this.generatePageElement(
             "div",
-            ["player-info-div", "button"],
+            ["player-info", "button"],
             this.infoContainer,
             "Player 1"
         );
 
         const player2Info = this.generatePageElement(
             "div",
-            ["player-info-div", "button"],
+            ["player-info", "button"],
             this.infoContainer,
             "Player 2"
         );
@@ -134,6 +136,7 @@ export default class UserInterface {
     populateGameContainer() {
         //if no game yet, fill blank placeholder grid with no info?
         //TODO: Pull from current Game to get game info and then propagate down the visuals to add elements to the game container
+        //call generateBoardContainer for each player
     }
 
     clearGameContainer() {
@@ -145,30 +148,63 @@ export default class UserInterface {
     }
 
     //square to hold both player boards
-    generateBoardContainerVisual(players) {
-        this.player1 = players[0];
-        this.player2 = players[1];
+    generateBoardContainer(player, gameContainer) {
+        const playerBoardContainer = this.generatePageElement(
+            "div",
+            ["player-board-container"],
+            this.gameContainer
+        );
+
+        this.generatePlayerBoard(player);
     }
 
     //visual element to display both grids that make up each player board
-    generatePlayerBoardVisual(player, boardContainer) {
-        this.player = player;
+    generatePlayerBoard(player, boardContainer) {
         this.playerRadar = this.player.playerRadar;
-        this.playerBoard = this.player.playerBoard;
+        this.playerMap = this.player.playerMap;
+
+        const playerRadarDiv = this.generatePageElement(
+            "div",
+            ["player-radar", "game-grid"],
+            this.boardContainer
+        );
+
+        const playerMapDiv = this.generatePageElement(
+            "div",
+            ["player-map", "game-grid"],
+            this.boardContainer
+        );
+
+        this.generateGameGrid(this.playerRadar, playerRadarDiv);
+        this.generateGameGrid(this.playerMap, playerMapDiv);
     }
 
     //create element to display any single grid
     //populated with game squares
-    generateGameGridVisual(gameGrid) {}
+    generateGameGrid(gameGrid, gridDiv) {
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                const currentSquare = gameGrid[i][j];
+                this.generateGridSquare(currentSquare, gridDiv);
+            }
+        }
+    }
 
     //update grid visual to display current game state
-    updateGridVisual() {}
+    updateGameGrid() {}
 
     //create element to represent a square in a grid
-    generateGridSquareVisual(gameSquare) {}
+    generateGridSquare(gameSquare, gridDiv) {
+        const thisSquare = generatePageElement(
+            "div",
+            ["game-square"],
+            gridDiv,
+            `grid square: x-${gameSquare.xCoord}, y-${gameSquare.yCoord}`
+        );
+    }
 
     //update grid visual to display current game state
-    updateGridSquareVisual() {}
+    updateGridSquare() {}
 
     //add ship to a single game square
     displayShip(coords) {}
